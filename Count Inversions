@@ -1,0 +1,61 @@
+class Solution {
+  public:
+  int countandmerge(vector<int> &arr,int l,int m,int r){
+        int n1=m-l+1,n2=r-m;
+        vector<int> left(n1),right(n2);
+        
+        for(int i=0;i<n1;i++)
+        {
+            left[i]=arr[l+i];
+        }
+        for(int i=0;i<n2;i++)
+        {
+            right[i]=arr[m+1+i];
+        }
+        int res=0,i=0,j=0,k=l;
+        while(i<n1 && j<n2)
+        {
+            if(left[i]<=right[j])
+            {
+                arr[k]=left[i];
+                i++;
+            }
+            else{
+                arr[k]=right[j];
+                res+=(n1-i);
+                j++;
+            }
+            k++;
+        }
+        while(i<n1)
+        {
+            arr[k]=left[i];
+            i++;
+            k++;
+        }
+        while(j<n2)
+        {
+            arr[k]=right[j];
+            j++;
+            k++;
+        }
+        return res;
+  }
+    // Function to count inversions in the array.
+    int inversionCount(vector<int> &arr) {
+        return inversionCountHelper(arr,0,arr.size()-1);
+    }
+    int inversionCountHelper(vector<int> &arr,int l,int r) {
+        
+        int res=0;
+        if(l<r)
+        {
+            int m=l+(r-l)/2;
+            res+=inversionCountHelper(arr,l,m);
+            res+=inversionCountHelper(arr,m+1,r);
+            res+=countandmerge(arr,l,m,r);
+        }
+        return res;
+      
+    }
+};
